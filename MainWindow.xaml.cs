@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace ScreenshotApp
 {
@@ -26,7 +27,8 @@ namespace ScreenshotApp
             InitializeComponent();
         }
 
-        private void save_Screenshot_as_File()
+        //below method is used to take screenshot and save in folder on Desktop
+        private void SaveScreenshot()
         {
             try
             {
@@ -48,7 +50,9 @@ namespace ScreenshotApp
 
                 g.CopyFromScreen(screenLeft, screenTop, 0, 0, bitmap_Screen.Size);
 
-                bitmap_Screen.Save("C:\\Users\\m.pravin.markandeya\\Desktop\\AppScreenshorts\\" + filename);
+               
+                //path of the folder on desktop is mentioned with filename for SaveMethod
+                bitmap_Screen.Save("C:\\Users\\manasi\\Desktop\\AppScreenshorts\\" + filename);
             }
             catch(Exception ex)
             {
@@ -58,9 +62,23 @@ namespace ScreenshotApp
 
         }
 
+        public static ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            save_Screenshot_as_File();
+            SaveScreenshot();
         }
 
         private void Windows_Keydown(object sender, KeyEventArgs e)
@@ -68,7 +86,7 @@ namespace ScreenshotApp
 
             if (e.Key == Key.P)
             {
-                save_Screenshot_as_File();
+                SaveScreenshot();
             }
         }
     }
